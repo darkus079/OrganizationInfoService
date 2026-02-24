@@ -1,8 +1,5 @@
-from fastapi import APIRouter, Depends
-
-from app.api.dependencies.auth import verify_api_key
+from fastapi import APIRouter
 
 router = APIRouter(
-    dependencies=[Depends(verify_api_key)],
-    tags=["protected"],
+    tags=["organizations-directory"],
 )
