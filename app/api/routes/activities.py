@@ -12,7 +12,12 @@ from app.schemas.organization import OrganizationListResponse
 router = APIRouter(prefix="/activities", tags=["activities"])
 
 
-@router.get("/{activity_id}/organizations", response_model=list[OrganizationListResponse])
+@router.get(
+    "/{activity_id}/organizations",
+    response_model=list[OrganizationListResponse],
+    summary="Получить организации по виду деятельности",
+    description="Возвращает организации, привязанные к указанному виду деятельности.",
+)
 def get_organizations_by_activity(
     activity_id: int,
     db: Session = Depends(get_db),
@@ -29,6 +34,11 @@ def get_organizations_by_activity(
 @router.get(
     "/{activity_id}/organizations/with-children",
     response_model=list[OrganizationListResponse],
+    summary="Получить организации по деятельности с дочерними видами",
+    description=(
+        "Возвращает организации по виду деятельности с учетом дочерних узлов "
+        "дерева деятельностей в пределах допустимой глубины."
+    ),
 )
 def get_organizations_by_activity_tree(
     activity_id: int,

@@ -13,7 +13,12 @@ from app.schemas.organization import OrganizationDetailResponse, OrganizationLis
 router = APIRouter(prefix="/organizations", tags=["organizations"])
 
 
-@router.get("/search/by-name", response_model=list[OrganizationListResponse])
+@router.get(
+    "/search/by-name",
+    response_model=list[OrganizationListResponse],
+    summary="Поиск организаций по названию",
+    description="Возвращает организации, название которых содержит переданную строку.",
+)
 def find_organizations_by_name(
     name: str = Query(..., min_length=1),
     db: Session = Depends(get_db),
@@ -21,7 +26,12 @@ def find_organizations_by_name(
     return search_organizations_by_name(db, name)
 
 
-@router.get("/search/by-radius", response_model=list[OrganizationListResponse])
+@router.get(
+    "/search/by-radius",
+    response_model=list[OrganizationListResponse],
+    summary="Поиск организаций в радиусе",
+    description="Возвращает организации в заданном радиусе (км) от точки на карте.",
+)
 def find_organizations_by_radius(
     latitude: float = Query(..., ge=-90, le=90),
     longitude: float = Query(..., ge=-180, le=180),
@@ -36,7 +46,12 @@ def find_organizations_by_radius(
     )
 
 
-@router.get("/search/by-area", response_model=list[OrganizationListResponse])
+@router.get(
+    "/search/by-area",
+    response_model=list[OrganizationListResponse],
+    summary="Поиск организаций в прямоугольной области",
+    description="Возвращает организации, попадающие в границы прямоугольной области по координатам.",
+)
 def find_organizations_by_area(
     min_latitude: float = Query(..., ge=-90, le=90),
     max_latitude: float = Query(..., ge=-90, le=90),
@@ -59,7 +74,12 @@ def find_organizations_by_area(
     )
 
 
-@router.get("/{organization_id}", response_model=OrganizationDetailResponse)
+@router.get(
+    "/{organization_id}",
+    response_model=OrganizationDetailResponse,
+    summary="Получить организацию по идентификатору",
+    description="Возвращает детальную информацию об организации и ее телефонах.",
+)
 def get_organization(
     organization_id: int,
     db: Session = Depends(get_db),

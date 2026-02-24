@@ -1,11 +1,11 @@
-from fastapi import HTTPException, status
+from fastapi import HTTPException, Security, status
 from fastapi.security import APIKeyHeader
 
 from app.core.config import get_settings
 
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
-def verify_api_key(x_api_key: str | None = api_key_header) -> None:
+def verify_api_key(x_api_key: str | None = Security(api_key_header)) -> None:
     settings = get_settings()
 
     if not x_api_key:
